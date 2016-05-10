@@ -19,7 +19,7 @@ package com.zuoxiaolong.blog.model.user;
  * TODO
  *
  * @author linjiedeng
- * @date 16/5/10 下午10:29
+ * @date 16/5/10 下午10:31
  * @since TODO
  */
 public class Test {
