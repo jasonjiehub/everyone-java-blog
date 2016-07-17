@@ -35,7 +35,7 @@ public interface WebBlogService {
 
     UserBlogInfo selectUserBlogInfoByUsername(String username, String pageSize, String offset);
 
-    int updateBlogConfig(BlogConfig blogConfig);
+    int updateBlogConfig(BlogConfig blogConfig, String username);
 
     BlogConfig selectBlogConfigByWebUserId(Integer webUserId);
 
