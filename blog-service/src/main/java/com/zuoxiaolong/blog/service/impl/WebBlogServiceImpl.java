@@ -115,7 +115,7 @@ public class WebBlogServiceImpl implements WebBlogService {
     }
 
     @Override
-    public int updateBlogConfig(BlogConfig blogConfig, String username) {
+    public int updateBlogConfig(BlogConfig blogConfig) {
         ValidateUtils.required(blogConfig);
         ValidateUtils.required(blogConfig.getWebUserId());
         ValidateUtils.required(blogConfig.getBlogTitle());
@@ -125,22 +125,7 @@ public class WebBlogServiceImpl implements WebBlogService {
         ValidateUtils.sensitiveWord(blogConfig.getBlogSubTitle());
         ValidateUtils.sensitiveWord(blogConfig.getIntroduction());
         ValidateUtils.numberMin(blogConfig.getWebUserId(), 0);
-        ValidateUtils.required(username);
-
-        //用户输入为空的情况下,设置默认值
-        if(StringUtils.isEmpty(blogConfig.getBlogTitle())) {
-            blogConfig.setBlogTitle(username + "的个人博客");
-        }
-
-        if(StringUtils.isEmpty(blogConfig.getBlogSubTitle())) {
-            blogConfig.setBlogSubTitle("我是一个狂热的Java编程爱好者");
-        }
-
-        if(StringUtils.isEmpty(blogConfig.getIntroduction())) {
-            blogConfig.setIntroduction("Java开发");
-        }
-
-        return blogConfigMapper.insertSelective(blogConfig);
+        return blogConfigMapper.updateByWebUserId(blogConfig);
     }
 
     @Override
