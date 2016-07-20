@@ -19,7 +19,6 @@ import com.zuoxiaolong.blog.common.bean.ExceptionType;
 import com.zuoxiaolong.blog.common.exception.BusinessException;
 import com.zuoxiaolong.blog.common.orm.DropDownPage;
 import com.zuoxiaolong.blog.common.utils.ObjectUtils;
-import com.zuoxiaolong.blog.common.utils.SensitiveWordCheckUtils;
 import com.zuoxiaolong.blog.common.utils.StringUtils;
 import com.zuoxiaolong.blog.common.utils.ValidateUtils;
 import com.zuoxiaolong.blog.mapper.BlogConfigMapper;
@@ -119,6 +118,12 @@ public class WebBlogServiceImpl implements WebBlogService {
     public int updateBlogConfig(BlogConfig blogConfig, String username) {
         ValidateUtils.required(blogConfig);
         ValidateUtils.required(blogConfig.getWebUserId());
+        ValidateUtils.required(blogConfig.getBlogTitle());
+        ValidateUtils.required(blogConfig.getBlogSubTitle());
+        ValidateUtils.required(blogConfig.getIntroduction());
+        ValidateUtils.sensitiveWord(blogConfig.getBlogTitle());
+        ValidateUtils.sensitiveWord(blogConfig.getBlogSubTitle());
+        ValidateUtils.sensitiveWord(blogConfig.getIntroduction());
         ValidateUtils.numberMin(blogConfig.getWebUserId(), 0);
         ValidateUtils.required(username);
 
@@ -133,13 +138,6 @@ public class WebBlogServiceImpl implements WebBlogService {
 
         if(StringUtils.isEmpty(blogConfig.getIntroduction())) {
             blogConfig.setIntroduction("Java开发");
-        }
-
-        if(SensitiveWordCheckUtils.isContainSensitiveWord(blogConfig.getIntroduction())
-                || SensitiveWordCheckUtils.isContainSensitiveWord(blogConfig.getBlogTitle())
-                || SensitiveWordCheckUtils.isContainSensitiveWord(blogConfig.getBlogSubTitle())) {
-            logger.info("blogConfig param: {} is invalid", blogConfig);
-            throw new BusinessException(ExceptionType.PARAMETER_ILLEGAL);
         }
 
         return blogConfigMapper.insertSelective(blogConfig);
